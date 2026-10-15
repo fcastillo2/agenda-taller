@@ -7,9 +7,10 @@ class ProductoService {
     return axios.get(BASE_URL, { signal })
   }
 
-  getProductoById(id) {
+  getProductoById(id, signal) {
     return axios.get(
-      `${BASE_URL}/${encodeURIComponent(id)}`
+      `${BASE_URL}/${encodeURIComponent(id)}`,
+      { signal }
     )
   }
 }

@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types'
 import Grid from '@mui/material/Grid2'
+import { Link } from 'react-router-dom'
 import {
   Box,
+  Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -73,7 +76,17 @@ export function ListCardProductos({ data }) {
                     Number(producto.precio)
                   )}
                 </Typography>
+
               </CardContent>
+              <CardActions>
+                <Button
+                  component={Link}
+                  to={`/producto/${producto.id}`}
+                  size="small"
+                >
+                  Ver detalle
+                </Button>
+              </CardActions>
             </Card>
           </Grid>
         ))}
