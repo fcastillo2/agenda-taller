@@ -95,7 +95,7 @@ export function ListCitas() {
                   },
                 }}
               >
-                <TableCell>Fecha y horario</TableCell>
+                <TableCell>Fecha y hora</TableCell>
                 <TableCell>Cliente</TableCell>
                 <TableCell>Servicio</TableCell>
                 <TableCell>Estado</TableCell>
@@ -116,13 +116,6 @@ export function ListCitas() {
                       Inicio: {mostrarFechaHora(cita.inicio)}
                     </Button>
 
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ whiteSpace: 'nowrap' }}
-                    >
-                      Fin: {mostrarFechaHora(cita.fin)}
-                    </Typography>
                   </TableCell>
 
                   <TableCell>{cita.cliente}</TableCell>

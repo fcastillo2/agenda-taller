@@ -2,6 +2,8 @@
 
 class CitaController
 {
+    //Variable para simular el id del encargado de la sucursal, en un escenario real este valor vendría de la sesión del usuario logueado.
+    //9 = Admin, 10 = Encargado, 13 = Cliente
     private int $encargadoId = 10;
 
     public function listar(): void
