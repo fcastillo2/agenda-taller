@@ -17,13 +17,26 @@ class RoutesController
 
         $ruta = trim($url, '/');
 
-        $segmentos = $ruta === '' ? [] : explode('/', $ruta);
+        $segmentos = $ruta === ''
+            ? []
+            : explode('/', $ruta);
 
-        if (
-            count($segmentos) < 1 ||
-            count($segmentos) > 2 ||
-            $segmentos[0] !== 'producto'
-        ) {
+        $esProducto =
+            count($segmentos) >= 1 &&
+            count($segmentos) <= 2 &&
+            $segmentos[0] === 'producto';
+
+        $esFactura =
+            count($segmentos) >= 1 &&
+            count($segmentos) <= 2 &&
+            $segmentos[0] === 'factura';
+
+        $esCita =
+            count($segmentos) >= 1 &&
+            count($segmentos) <= 2 &&
+            $segmentos[0] === 'cita';
+
+        if (!$esProducto && !$esFactura && !$esCita) {
             Response::json(
                 ['mensaje' => 'Ruta no encontrada.'],
                 404
@@ -31,7 +44,6 @@ class RoutesController
 
             return;
         }
-
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
             header('Allow: GET');
 
@@ -43,12 +55,36 @@ class RoutesController
             return;
         }
 
-        $controlador = new ProductoController();
+        if ($esProducto) {
+            $controlador = new ProductoController();
 
-        if (count($segmentos) === 1) {
-            $controlador->listar();
-        } else {
-            $controlador->detalle($segmentos[1]);
+            if (count($segmentos) === 1) {
+                $controlador->listar();
+            } else {
+                $controlador->detalle($segmentos[1]);
+            }
+
+            return;
+        }
+
+        if ($esFactura) {
+            $controlador = new FacturaController();
+
+            if (count($segmentos) === 1) {
+                $controlador->listar();
+            } else {
+                $controlador->detalle($segmentos[1]);
+            }
+        }
+
+        if ($esCita) {
+            $controlador = new CitaController();
+
+            if (count($segmentos) === 1) {
+                $controlador->listar();
+            } else {
+                $controlador->detalle($segmentos[1]);
+            }
         }
     }
 }
