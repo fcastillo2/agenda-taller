@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -12,79 +12,79 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material'
-import FacturaService from '../../services/FacturaService'
+} from "@mui/material";
+import FacturaService from "../../services/FacturaService";
 
-const formatoPrecio = new Intl.NumberFormat('es-CR', {
-  style: 'currency',
-  currency: 'CRC',
-})
+const formatoPrecio = new Intl.NumberFormat("es-CR", {
+  style: "currency",
+  currency: "CRC",
+});
 
-const formatoFecha = new Intl.DateTimeFormat('es-CR', {
-  dateStyle: 'short',
-  timeStyle: 'short',
-})
+const formatoFecha = new Intl.DateTimeFormat("es-CR", {
+  dateStyle: "short",
+  timeStyle: "short",
+});
 
 function mostrarFecha(fecha) {
-  const valor = new Date(fecha.replace(' ', 'T'))
+  const valor = new Date(fecha.replace(" ", "T"));
 
   return Number.isNaN(valor.getTime())
-    ? 'Fecha inválida'
-    : formatoFecha.format(valor)
+    ? "Fecha inválida"
+    : formatoFecha.format(valor);
 }
 
 export function ListFacturas() {
-  const [facturas, setFacturas] = useState([])
-  const [error, setError] = useState('')
-  const [loaded, setLoaded] = useState(false)
+  const [facturas, setFacturas] = useState([]);
+  const [error, setError] = useState("");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const controlador = new AbortController()
+    const controlador = new AbortController();
 
     FacturaService.getFacturas(controlador.signal)
       .then((response) => {
-        if (controlador.signal.aborted) return
+        if (controlador.signal.aborted) return;
 
-        setFacturas(response.data.facturas)
+        setFacturas(response.data.facturas);
       })
       .catch((errorSolicitud) => {
-        if (controlador.signal.aborted) return
+        if (controlador.signal.aborted) return;
 
         setError(
           errorSolicitud.response?.data?.mensaje ??
-          'No se pudo cargar el historial de facturación.'
-        )
+            "No se pudo cargar el historial de facturación.",
+        );
       })
       .finally(() => {
         if (!controlador.signal.aborted) {
-          setLoaded(true)
+          setLoaded(true);
         }
-      })
+      });
 
-    return () => controlador.abort()
-  }, [])
+    return () => controlador.abort();
+  }, []);
 
   if (!loaded) {
     return (
       <Typography role="status" sx={{ p: 3 }}>
         Cargando facturas...
       </Typography>
-    )
+    );
   }
 
   if (error) {
-    return <Alert severity="error">{error}</Alert>
+    return <Alert severity="error">{error}</Alert>;
   }
 
   return (
     <Box sx={{ py: 3 }}>
       <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
-        Historial de facturación
+        Historial de proformas
       </Typography>
 
       {facturas.length === 0 ? (
         <Alert severity="info">
-          No hay facturas registradas para la sucursal.
+          No hay proformas registradas para la sucursal.
         </Alert>
       ) : (
         <TableContainer component={Paper}>
@@ -92,10 +92,10 @@ export function ListFacturas() {
             <TableHead>
               <TableRow
                 sx={{
-                  bgcolor: 'primary.main',
-                  '& th': {
-                    color: 'primary.contrastText',
-                    fontWeight: 'bold',
+                  bgcolor: "primary.main",
+                  "& th": {
+                    color: "primary.contrastText",
+                    fontWeight: "bold",
                   },
                 }}
               >
@@ -103,6 +103,7 @@ export function ListFacturas() {
                 <TableCell>Fecha</TableCell>
                 <TableCell>Cliente</TableCell>
                 <TableCell align="right">Total</TableCell>
+                <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
 
@@ -120,19 +121,25 @@ export function ListFacturas() {
                     </Button>
                   </TableCell>
 
-                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>
                     {mostrarFecha(factura.fecha)}
                   </TableCell>
 
-                  <TableCell>
-                    {factura.cliente}
-                  </TableCell>
+                  <TableCell>{factura.cliente}</TableCell>
 
-                  <TableCell
-                    align="right"
-                    sx={{ whiteSpace: 'nowrap' }}
-                  >
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
                     {formatoPrecio.format(Number(factura.total))}
+                  </TableCell>
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                    <Button
+                      component={Link}
+                      to={`/factura/${factura.id}`}
+                      variant="outlined"
+                      size="small"
+                      aria-label={`Ver detalle de la proforma ${factura.numero}`}
+                    >
+                      Ver detalle
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -141,5 +148,5 @@ export function ListFacturas() {
         </TableContainer>
       )}
     </Box>
-  )
+  );
 }

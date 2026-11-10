@@ -18,6 +18,8 @@ import ProductoService from '../../services/ProductoService'
 const formatoPrecio = new Intl.NumberFormat('es-CR', {
   style: 'currency',
   currency: 'CRC',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
 })
 
 export function TableProductos() {
@@ -90,7 +92,7 @@ export function TableProductos() {
                 <TableCell>Categoría</TableCell>
                 <TableCell>Material</TableCell>
                 <TableCell align="right">Precio</TableCell>
-                <TableCell align="center">Acciones</TableCell>
+                <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
 
@@ -113,7 +115,7 @@ export function TableProductos() {
                     {formatoPrecio.format(Number(producto.precio))}
                   </TableCell>
 
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <Button
                       component={Link}
                       to={`/producto/${producto.id}`}

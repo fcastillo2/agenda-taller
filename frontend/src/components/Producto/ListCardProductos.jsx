@@ -14,6 +14,8 @@ import {
 const formatoPrecio = new Intl.NumberFormat('es-CR', {
   style: 'currency',
   currency: 'CRC',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
 })
 
 export function ListCardProductos({ data }) {
@@ -78,7 +80,7 @@ export function ListCardProductos({ data }) {
                 </Typography>
 
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <Button
                   component={Link}
                   to={`/producto/${producto.id}`}

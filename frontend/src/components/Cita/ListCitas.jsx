@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -13,63 +13,63 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material'
-import CitaService from '../../services/CitaService'
+} from "@mui/material";
+import CitaService from "../../services/CitaService";
 
-const formatoFechaHora = new Intl.DateTimeFormat('es-CR', {
-  dateStyle: 'short',
-  timeStyle: 'short',
-})
+const formatoFechaHora = new Intl.DateTimeFormat("es-CR", {
+  dateStyle: "short",
+  timeStyle: "short",
+});
 
 function mostrarFechaHora(fecha) {
-  const valor = new Date(fecha.replace(' ', 'T'))
+  const valor = new Date(fecha.replace(" ", "T"));
 
   return Number.isNaN(valor.getTime())
-    ? 'Fecha inválida'
-    : formatoFechaHora.format(valor)
+    ? "Fecha inválida"
+    : formatoFechaHora.format(valor);
 }
 
 export function ListCitas() {
-  const [citas, setCitas] = useState([])
-  const [error, setError] = useState('')
-  const [loaded, setLoaded] = useState(false)
+  const [citas, setCitas] = useState([]);
+  const [error, setError] = useState("");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const controlador = new AbortController()
+    const controlador = new AbortController();
 
     CitaService.getCitas(controlador.signal)
       .then((response) => {
-        if (controlador.signal.aborted) return
+        if (controlador.signal.aborted) return;
 
-        setCitas(response.data.citas)
+        setCitas(response.data.citas);
       })
       .catch((errorSolicitud) => {
-        if (controlador.signal.aborted) return
+        if (controlador.signal.aborted) return;
 
         setError(
           errorSolicitud.response?.data?.mensaje ??
-          'No se pudo cargar el historial de citas.'
-        )
+            "No se pudo cargar el historial de citas.",
+        );
       })
       .finally(() => {
         if (!controlador.signal.aborted) {
-          setLoaded(true)
+          setLoaded(true);
         }
-      })
+      });
 
-    return () => controlador.abort()
-  }, [])
+    return () => controlador.abort();
+  }, []);
 
   if (!loaded) {
     return (
       <Typography role="status" sx={{ p: 3 }}>
         Cargando citas...
       </Typography>
-    )
+    );
   }
 
   if (error) {
-    return <Alert severity="error">{error}</Alert>
+    return <Alert severity="error">{error}</Alert>;
   }
 
   return (
@@ -88,10 +88,10 @@ export function ListCitas() {
             <TableHead>
               <TableRow
                 sx={{
-                  bgcolor: 'primary.main',
-                  '& th': {
-                    color: 'primary.contrastText',
-                    fontWeight: 'bold',
+                  bgcolor: "primary.main",
+                  "& th": {
+                    color: "primary.contrastText",
+                    fontWeight: "bold",
                   },
                 }}
               >
@@ -99,23 +99,19 @@ export function ListCitas() {
                 <TableCell>Cliente</TableCell>
                 <TableCell>Servicio</TableCell>
                 <TableCell>Estado</TableCell>
+                <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {citas.map((cita) => (
                 <TableRow key={cita.id} hover>
-                  <TableCell component="th" scope="row">
-                    <Button
-                      component={Link}
-                      to={`/cita/${cita.id}`}
-                      size="small"
-                      sx={{ textTransform: 'none', textAlign: 'left' }}
-                      aria-label={`Ver reserva de ${cita.cliente}, ${mostrarFechaHora(cita.inicio)}`}
-                    >
-                      Inicio: {mostrarFechaHora(cita.inicio)}
-                    </Button>
-
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    sx={{ whiteSpace: "nowrap" }}
+                  >
+                    {mostrarFechaHora(cita.inicio)}
                   </TableCell>
 
                   <TableCell>{cita.cliente}</TableCell>
@@ -130,18 +126,29 @@ export function ListCitas() {
                       sx={{
                         borderColor: cita.estado_color,
                         borderWidth: 2,
-                        color: 'text.primary',
-                        '&::before': {
+                        color: "text.primary",
+                        "&::before": {
                           content: '""',
                           width: 10,
                           height: 10,
-                          borderRadius: '50%',
+                          borderRadius: "50%",
                           bgcolor: cita.estado_color,
                           ml: 1,
                           flexShrink: 0,
                         },
                       }}
                     />
+                  </TableCell>
+                  <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+                    <Button
+                      component={Link}
+                      to={`/cita/${cita.id}`}
+                      variant="outlined"
+                      size="small"
+                      aria-label={`Ver detalle de la reserva de ${cita.cliente}`}
+                    >
+                      Ver detalle
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -150,5 +157,5 @@ export function ListCitas() {
         </TableContainer>
       )}
     </Box>
-  )
+  );
 }

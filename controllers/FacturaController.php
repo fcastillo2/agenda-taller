@@ -50,7 +50,7 @@ class FacturaController
 
         if ($factura === null) {
             Response::json(
-                ['mensaje' => 'Factura no encontrada para la sucursal.'],
+                ['mensaje' => 'Proforma no encontrada para la sucursal.'],
                 404
             );
 
