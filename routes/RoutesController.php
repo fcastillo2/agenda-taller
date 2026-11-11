@@ -87,6 +87,50 @@ class RoutesController
             }
         }
 
+        if (
+            ($segmentos[0] ?? null) === 'sucursal' &&
+            ($segmentos[1] ?? null) === 'encargados-disponibles' &&
+            count($segmentos) <= 3
+        ) {
+            if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+                header('Allow: GET');
+                Response::json(['mensaje' => 'Método no permitido.'], 405);
+                return;
+            }
+
+            (new SucursalController())->encargadosDisponibles($segmentos[2] ?? null);
+            return;
+        }
+
+        if (
+            ($segmentos[0] ?? null) === 'sucursal' &&
+            count($segmentos) <= 2
+        ) {
+            $metodo = $_SERVER['REQUEST_METHOD'];
+            $id = $segmentos[1] ?? null;
+            $permitidos = $id === null ? ['GET', 'POST'] : ['GET', 'PUT'];
+
+            if (!in_array($metodo, $permitidos, true)) {
+                header('Allow: ' . implode(', ', $permitidos));
+                Response::json(['mensaje' => 'Método no permitido.'], 405);
+                return;
+            }
+
+            $controlador = new SucursalController();
+
+            if ($metodo === 'POST') {
+                $controlador->guardar();
+            } elseif ($metodo === 'PUT') {
+                $controlador->guardar($id);
+            } elseif ($id === null) {
+                $controlador->listar();
+            } else {
+                $controlador->detalle($id);
+            }
+
+            return;
+        }
+
         if (!$esProducto && !$esFactura && !$esCita) {
             Response::json(
                 ['mensaje' => 'Ruta no encontrada.'],

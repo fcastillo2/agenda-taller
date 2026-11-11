@@ -70,4 +70,19 @@ class MySqlConnect
             $sentencia->close();
         }
     }
+
+    public function enTransaccion(callable $operacion): mixed
+    {
+        $this->link->begin_transaction();
+
+        try {
+            $resultado = $operacion();
+            $this->link->commit();
+
+            return $resultado;
+        } catch (Throwable $error) {
+            $this->link->rollback();
+            throw $error;
+        }
+    }
 }

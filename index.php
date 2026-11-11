@@ -21,6 +21,9 @@ try {
     require_once __DIR__ . '/models/ServicioModel.php';
     require_once __DIR__ . '/controllers/ServicioController.php';
 
+    require_once __DIR__ . '/models/SucursalModel.php';
+    require_once __DIR__ . '/controllers/SucursalController.php';
+
     // Procesar la ruta solicitada.
     $rutas = new RoutesController();
     $rutas->ejecutar();

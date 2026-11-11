@@ -25,6 +25,9 @@ import { ListServicios } from "./components/Servicio/ListServicios";
 import { DetailServicio } from "./components/Servicio/DetailServicio";
 import { FormProducto } from "./components/Producto/FormProducto";
 import { FormServicio } from "./components/Servicio/FormServicio";
+import { ListSucursales } from "./components/Sucursal/ListSucursales";
+import { DetailSucursal } from "./components/Sucursal/DetailSucursal";
+import { FormSucursal } from "./components/Sucursal/FormSucursal";
 
 const rutas = createBrowserRouter([
   {
@@ -69,6 +72,26 @@ const rutas = createBrowserRouter([
       {
         path: "/servicio/:id/editar",
         element: <FormServicio />,
+      },
+
+      {
+        path: "/sucursal",
+        element: <ListSucursales />,
+      },
+
+      {
+        path: "/sucursal/:id",
+        element: <DetailSucursal />,
+      },
+
+      { 
+        path: "/sucursal/crear", 
+        element: <FormSucursal /> 
+      },
+
+      {
+        path: "/sucursal/:id/editar",
+        element: <FormSucursal />,
       },
 
       {
