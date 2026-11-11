@@ -61,6 +61,16 @@ export function DetailProducto() {
         <Button component={Link} to="/producto" variant="outlined">
           Volver al historial
         </Button>
+
+        {producto && (
+          <Button
+            component={Link}
+            to={`/producto/${producto.id}/editar`}
+            variant="contained"
+          >
+            Editar producto
+          </Button>
+        )}
       </Box>
 
       {!loaded ? (

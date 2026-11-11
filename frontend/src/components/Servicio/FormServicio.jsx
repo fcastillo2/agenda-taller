@@ -193,9 +193,10 @@ export function FormServicio() {
     setGuardando(true);
 
     try {
+
       const respuesta = esEdicion
-        ? await ServicioService.actualizarServicio(id, envio)
-        : await ServicioService.crearServicio(envio);
+        ? await ServicioService.actualizarServicio(id, cuerpo)
+        : await ServicioService.crearServicio(cuerpo);
 
       navegar(`/servicio/${respuesta.data.id}`);
     } catch (errorSolicitud) {

@@ -23,7 +23,7 @@ import { ListCitas } from "./components/Cita/ListCitas";
 import { DetailCita } from "./components/Cita/DetailCita";
 import { ListServicios } from "./components/Servicio/ListServicios";
 import { DetailServicio } from "./components/Servicio/DetailServicio";
-
+import { FormProducto } from "./components/Producto/FormProducto";
 import { FormServicio } from "./components/Servicio/FormServicio";
 
 const rutas = createBrowserRouter([
@@ -48,6 +48,9 @@ const rutas = createBrowserRouter([
         element: <TableProductos />,
       },
 
+      { path: "/producto/crear", element: <FormProducto /> },
+      { path: "/producto/:id/editar", element: <FormProducto /> },
+
       {
         path: "/servicio",
         element: <ListServicios />,
@@ -62,7 +65,7 @@ const rutas = createBrowserRouter([
         path: "/servicio/crear",
         element: <FormServicio />,
       },
-      
+
       {
         path: "/servicio/:id/editar",
         element: <FormServicio />,

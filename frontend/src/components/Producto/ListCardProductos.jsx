@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import Grid from '@mui/material/Grid2'
-import { Link } from 'react-router-dom'
+import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid2";
+import { Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -9,14 +9,14 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from '@mui/material'
+} from "@mui/material";
 
-const formatoPrecio = new Intl.NumberFormat('es-CR', {
-  style: 'currency',
-  currency: 'CRC',
+const formatoPrecio = new Intl.NumberFormat("es-CR", {
+  style: "currency",
+  currency: "CRC",
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
-})
+});
 
 export function ListCardProductos({ data }) {
   return (
@@ -25,29 +25,32 @@ export function ListCardProductos({ data }) {
         Productos del Taller Castillo
       </Typography>
 
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+        <Button component={Link} to="/producto/crear" variant="contained">
+          Crear producto
+        </Button>
+      </Box>
+
       <Grid container spacing={3}>
         {data.map((producto) => (
-          <Grid
-            key={producto.id}
-            size={{ xs: 12, sm: 6, md: 4 }}
-          >
-            <Card sx={{ height: '100%' }}>
+          <Grid key={producto.id} size={{ xs: 12, sm: 6, md: 4 }}>
+            <Card sx={{ height: "100%" }}>
               {producto.imagen ? (
                 <CardMedia
                   component="img"
                   height="180"
                   image={producto.imagen}
                   alt={producto.nombre}
-                  sx={{ objectFit: 'cover' }}
+                  sx={{ objectFit: "cover" }}
                 />
               ) : (
                 <Box
                   sx={{
                     height: 180,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: 'action.hover',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    bgcolor: "action.hover",
                   }}
                 >
                   <Typography color="text.secondary">
@@ -57,11 +60,7 @@ export function ListCardProductos({ data }) {
               )}
 
               <CardContent>
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  sx={{ mb: 1 }}
-                >
+                <Typography variant="h6" component="h2" sx={{ mb: 1 }}>
                   {producto.nombre}
                 </Typography>
 
@@ -69,18 +68,11 @@ export function ListCardProductos({ data }) {
                   {producto.categoria}
                 </Typography>
 
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  sx={{ mt: 2 }}
-                >
-                  {formatoPrecio.format(
-                    Number(producto.precio)
-                  )}
+                <Typography variant="h6" color="primary" sx={{ mt: 2 }}>
+                  {formatoPrecio.format(Number(producto.precio))}
                 </Typography>
-
               </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end' }}>
+              <CardActions sx={{ justifyContent: "flex-end" }}>
                 <Button
                   component={Link}
                   to={`/producto/${producto.id}`}
@@ -94,23 +86,18 @@ export function ListCardProductos({ data }) {
         ))}
       </Grid>
     </Box>
-  )
+  );
 }
 
 ListCardProductos.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-      ]).isRequired,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       nombre: PropTypes.string.isRequired,
       categoria: PropTypes.string.isRequired,
-      precio: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-      ]).isRequired,
+      precio: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
       imagen: PropTypes.string,
-    })
+    }),
   ).isRequired,
-}
+};

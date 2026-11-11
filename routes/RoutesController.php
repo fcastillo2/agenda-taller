@@ -68,6 +68,25 @@ class RoutesController
             count($segmentos) <= 2 &&
             $segmentos[0] === 'cita';
 
+        if ($esProducto) {
+            $metodo = $_SERVER['REQUEST_METHOD'];
+            $id = $segmentos[1] ?? null;
+
+            if ($metodo === 'POST' && $id === null) {
+                (new ProductoController())->guardar();
+                return;
+            }
+
+            if (
+                in_array($metodo, ['PUT', 'POST'], true) &&
+                $id !== null &&
+                $id !== 'categorias'
+            ) {
+                (new ProductoController())->guardar($id);
+                return;
+            }
+        }
+
         if (!$esProducto && !$esFactura && !$esCita) {
             Response::json(
                 ['mensaje' => 'Ruta no encontrada.'],
@@ -89,6 +108,11 @@ class RoutesController
 
         if ($esProducto) {
             $controlador = new ProductoController();
+
+            if (($segmentos[1] ?? null) === 'categorias') {
+                $controlador->categorias();
+                return;
+            }
 
             if (count($segmentos) === 1) {
                 $controlador->listar();
