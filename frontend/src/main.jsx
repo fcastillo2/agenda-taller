@@ -1,100 +1,121 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import './index.css'
-import App from './App.jsx'
+import "./index.css";
+import App from "./App.jsx";
 
-import { Home } from './components/Home/Home'
-import { PageNotFound } from './components/Home/PageNotFound'
+import { Home } from "./components/Home/Home";
+import { PageNotFound } from "./components/Home/PageNotFound";
 
-import { ListProductos } from './components/Producto/ListProductos'
-import { DetailProducto } from './components/Producto/DetailProducto'
-import { TableProductos } from './components/Producto/TableProductos'
+import { ListProductos } from "./components/Producto/ListProductos";
+import { DetailProducto } from "./components/Producto/DetailProducto";
+import { TableProductos } from "./components/Producto/TableProductos";
 
-import UserProvider from './components/User/UserProvider'
-import { Login } from './components/User/Login'
-import { Logout } from './components/User/Logout'
-import { Signup } from './components/User/Signup'
-import { Unauthorized } from './components/User/Unauthorized'
-import { ListFacturas } from './components/Factura/ListFacturas'
-import { DetailFactura } from './components/Factura/DetailFactura'
-import { ListCitas } from './components/Cita/ListCitas'
-import { DetailCita } from './components/Cita/DetailCita'
+import UserProvider from "./components/User/UserProvider";
+import { Login } from "./components/User/Login";
+import { Logout } from "./components/User/Logout";
+import { Signup } from "./components/User/Signup";
+import { Unauthorized } from "./components/User/Unauthorized";
+import { ListFacturas } from "./components/Factura/ListFacturas";
+import { DetailFactura } from "./components/Factura/DetailFactura";
+import { ListCitas } from "./components/Cita/ListCitas";
+import { DetailCita } from "./components/Cita/DetailCita";
+import { ListServicios } from "./components/Servicio/ListServicios";
+import { DetailServicio } from "./components/Servicio/DetailServicio";
+
+import { FormServicio } from "./components/Servicio/FormServicio";
 
 const rutas = createBrowserRouter([
   {
     element: <App />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
       },
       {
-        path: '/producto',
+        path: "/producto",
         element: <ListProductos />,
       },
       {
-        path: '/producto/:id',
+        path: "/producto/:id",
         element: <DetailProducto />,
       },
 
       {
-        path: '/producto-tabla',
+        path: "/producto-tabla",
         element: <TableProductos />,
       },
 
       {
-        path: '/user/login',
+        path: "/servicio",
+        element: <ListServicios />,
+      },
+
+      {
+        path: "/servicio/:id",
+        element: <DetailServicio />,
+      },
+
+      {
+        path: "/servicio/crear",
+        element: <FormServicio />,
+      },
+      
+      {
+        path: "/servicio/:id/editar",
+        element: <FormServicio />,
+      },
+
+      {
+        path: "/user/login",
         element: <Login />,
       },
       {
-        path: '/user/logout',
+        path: "/user/logout",
         element: <Logout />,
       },
       {
-        path: '/user/create',
+        path: "/user/create",
         element: <Signup />,
       },
       {
-        path: '/unauthorized',
+        path: "/unauthorized",
         element: <Unauthorized />,
       },
       {
-        path: '/factura',
+        path: "/factura",
         element: <ListFacturas />,
       },
 
       {
-        path: '/factura/:id',
+        path: "/factura/:id",
         element: <DetailFactura />,
       },
 
       {
-        path: '/cita',
+        path: "/cita",
         element: <ListCitas />,
       },
 
       {
-        path: '/cita/:id',
+        path: "/cita/:id",
         element: <DetailCita />,
       },
 
       {
-        path: '*',
+        path: "*",
         element: <PageNotFound />,
       },
     ],
   },
-])
+]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <UserProvider>
       <RouterProvider router={rutas} />
     </UserProvider>
-  </StrictMode>
-)
+  </StrictMode>,
+);

@@ -18,6 +18,9 @@ try {
     require_once __DIR__ . '/models/CitaModel.php';
     require_once __DIR__ . '/controllers/CitaController.php';
 
+    require_once __DIR__ . '/models/ServicioModel.php';
+    require_once __DIR__ . '/controllers/ServicioController.php';
+
     // Procesar la ruta solicitada.
     $rutas = new RoutesController();
     $rutas->ejecutar();

@@ -21,6 +21,38 @@ class RoutesController
             ? []
             : explode('/', $ruta);
 
+        if (
+            ($segmentos[0] ?? null) === 'servicio' &&
+            count($segmentos) <= 2
+        ) {
+            $metodo = $_SERVER['REQUEST_METHOD'];
+            $id = $segmentos[1] ?? null;
+            $permitidos = $id === null
+                ? ['GET', 'POST']
+                : ['GET', 'PUT', 'POST'];
+
+            if (!in_array($metodo, $permitidos, true)) {
+                header('Allow: ' . implode(', ', $permitidos));
+                Response::json(['mensaje' => 'Método no permitido.'], 405);
+                return;
+            }
+
+            $controlador = new ServicioController();
+
+            if ($metodo === 'POST' && $id === null) {
+                $controlador->crear();
+            } elseif ($metodo === 'PUT' || $metodo === 'POST') {
+                $controlador->actualizar($id);
+            } elseif ($id === null) {
+                $controlador->listar();
+            } else {
+                $controlador->detalle($id);
+            }
+
+            return;
+        }
+
+
         $esProducto =
             count($segmentos) >= 1 &&
             count($segmentos) <= 2 &&

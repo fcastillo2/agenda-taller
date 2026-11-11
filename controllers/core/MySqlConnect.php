@@ -47,4 +47,27 @@ class MySqlConnect
 
         return $filas;
     }
+
+    public function executeWrite(
+        string $sql,
+        array $parametros = [],
+        string $tipos = ''
+    ): array {
+        $sentencia = $this->link->prepare($sql);
+
+        try {
+            if ($parametros !== []) {
+                $sentencia->bind_param($tipos, ...$parametros);
+            }
+
+            $sentencia->execute();
+
+            return [
+                'id_insertado' => $sentencia->insert_id,
+                'filas_afectadas' => $sentencia->affected_rows,
+            ];
+        } finally {
+            $sentencia->close();
+        }
+    }
 }
