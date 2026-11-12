@@ -21,6 +21,46 @@ class RoutesController
             ? []
             : explode('/', $ruta);
 
+        if (($segmentos[0] ?? null) === 'agenda') {
+            $cantidad = count($segmentos);
+
+            if (
+                $cantidad === 3 &&
+                in_array($segmentos[2], ['horario', 'bloqueo'], true)
+            ) {
+                if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                    header('Allow: POST');
+                    Response::json(['mensaje' => 'Método no permitido.'], 405);
+                    return;
+                }
+
+                (new AgendaController())->crear($segmentos[1], $segmentos[2]);
+                return;
+            }
+
+            $esListado = $cantidad === 2;
+            $esDetalle = $cantidad === 4
+                && in_array($segmentos[2], ['horario', 'bloqueo'], true);
+
+            if (!$esListado && !$esDetalle) {
+                Response::json(['mensaje' => 'Ruta de agenda no encontrada.'], 404);
+                return;
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+                header('Allow: GET');
+                Response::json(['mensaje' => 'Método no permitido.'], 405);
+                return;
+            }
+
+            (new AgendaController())->consultar(
+                $segmentos[1],
+                $segmentos[2] ?? null,
+                $segmentos[3] ?? null
+            );
+            return;
+        }
+
         if (
             ($segmentos[0] ?? null) === 'servicio' &&
             count($segmentos) <= 2

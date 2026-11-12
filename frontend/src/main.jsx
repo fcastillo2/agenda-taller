@@ -28,6 +28,8 @@ import { FormServicio } from "./components/Servicio/FormServicio";
 import { ListSucursales } from "./components/Sucursal/ListSucursales";
 import { DetailSucursal } from "./components/Sucursal/DetailSucursal";
 import { FormSucursal } from "./components/Sucursal/FormSucursal";
+import { AgendaSucursal } from "./components/Agenda/AgendaSucursal";
+import { FormAgenda } from "./components/Agenda/FormAgenda";
 
 const rutas = createBrowserRouter([
   {
@@ -84,9 +86,9 @@ const rutas = createBrowserRouter([
         element: <DetailSucursal />,
       },
 
-      { 
-        path: "/sucursal/crear", 
-        element: <FormSucursal /> 
+      {
+        path: "/sucursal/crear",
+        element: <FormSucursal />,
       },
 
       {
@@ -128,6 +130,25 @@ const rutas = createBrowserRouter([
       {
         path: "/cita/:id",
         element: <DetailCita />,
+      },
+
+      {
+        path: "/agenda",
+        element: <AgendaSucursal />,
+      },
+
+      {
+        path: "/agenda/:sucursalId",
+        element: <AgendaSucursal />,
+      },
+      {
+        path: "/agenda/:sucursalId/:tipo/:registroId",
+        element: <AgendaSucursal />,
+      },
+
+      {
+        path: "/agenda/:sucursalId/:tipo/crear",
+        element: <FormAgenda />,
       },
 
       {

@@ -89,6 +89,7 @@ class SucursalModel
                 );
 
                 $id = (int) $resultado['id_insertado'];
+                $this->crearHorarioHabitual($id);
             } else {
                 $filas = $this->enlace->executeSQL(
                     'SELECT id FROM sucursal WHERE id = ? FOR UPDATE',
@@ -166,4 +167,21 @@ class SucursalModel
             );
         }
     }
+
+    private function crearHorarioHabitual(int $sucursalId): void
+    {
+        $this->enlace->executeWrite(
+            "INSERT INTO horario_sucursal
+            (sucursal_id, fecha, dia_semana, hora_inicio, hora_fin)
+         VALUES
+            (?, NULL, 1, '08:00:00', '17:00:00'),
+            (?, NULL, 2, '08:00:00', '17:00:00'),
+            (?, NULL, 3, '08:00:00', '17:00:00'),
+            (?, NULL, 4, '08:00:00', '17:00:00'),
+            (?, NULL, 5, '08:00:00', '17:00:00')",
+            array_fill(0, 5, $sucursalId),
+            'iiiii'
+        );
+    }
+    
 }
